@@ -15,7 +15,7 @@ public class Title : MonoBehaviour
     void Update()
     {
         if(Input.anyKeyDown) {
-            SceneManager.LoadScene("Game");
+            SceneManager.LoadScene("Stage1");
         }
         
     }

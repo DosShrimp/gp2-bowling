@@ -12,6 +12,7 @@ public class Shot : MonoBehaviour
 
     bool isClicked1 = true;
     bool isClicked2 = false;
+    public bool isShoted = false;
 
     public GameObject meter;
     public GameObject power_meter;
@@ -45,7 +46,7 @@ public class Shot : MonoBehaviour
         
         
 
-        if(Input.GetMouseButtonDown(0)) {
+        if(Input.GetKeyDown("space")) {
             if(isClicked1) {
 
                 isClicked2 = true;
@@ -56,6 +57,7 @@ public class Shot : MonoBehaviour
                 speed = ((rt.sizeDelta.y / 100) * 300000) + 200000;
 
                 isClicked2 = false;
+                isShoted = true;
             }
         }
 
@@ -87,6 +89,13 @@ public class Shot : MonoBehaviour
         //メーターのz軸の角度をボールのx軸の角度に、-1かけるとちょうどいい
         transform.rotation = Quaternion.Euler(angle * -1, 0, 0);
 
+    }
+
+    public void reset() {
+        isClicked1 = true;
+        isClicked2 = false;
+        isShoted = false;
+        transform.position = new Vector3(0, 1, -5);
     }
 
 

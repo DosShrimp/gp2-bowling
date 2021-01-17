@@ -19,8 +19,7 @@ public class Wall : MonoBehaviour
     }
 
     void OnCollisionEnter(Collision collision) {
-        if(collision.gameObject.tag == "Player") {
-            Debug.Log("Hit");
+        if(collision.gameObject.tag != "Plane") {
             judge = true;
         }
     }
