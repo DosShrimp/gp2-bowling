@@ -1,101 +1,126 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Manager : MonoBehaviour
 {
-    public EnemyManager em;
+    public PinManager pm;
     public GameObject gcText;
-    public float count = 2;
 
     public GameObject player;
-    Rigidbody rb;
-    Shot shot;
-
-    public GameObject zanki1;
-    public GameObject zanki2;
-    public GameObject zanki3;
-    bool z1IsDestroyed = false;
-    bool z2IsDestroyed = false;
-    bool z3IsDestroyed = false;
+    Throw th;
 
     public GameObject goText;
+
+    List<GameObject> firstPins;
+    List<Collapse> firstScripts;
+
+    public List<GameObject> secondPins = new List<GameObject>();
+    List<Collapse> secondScripts;
+
+    public bool first_throw = true;
+    public bool second_throw = false;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        rb = player.GetComponent<Rigidbody>();
-        shot = player.GetComponent<Shot>();
+        th = player.GetComponent<Throw>();
+        firstPins = pm.firstPins;
+        firstScripts = pm.firstScripts;
+        secondScripts = pm.secondScripts;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(shot.isShoted) {
-            
-            if(em.isClear) {
 
-                count -= 1 * Time.deltaTime;
+        //一回目の投げか？   
+        if(first_throw) {   
 
-                if(count < 0) {
-                    count = 0;
-                    gcText.SetActive(true);
-                }
 
-            }else if(rb.IsSleeping()) {
-                
-                count -= 1 * Time.deltaTime;
-                
-                if(count < 0) {
-                                        
-                    if(z1IsDestroyed == false) {
+            //ボールが奥に着いたか？&&すべてのピンが止まったか？
+            if(th.arrived && firstPins.All(i => i.GetComponent<Rigidbody>().IsSleeping())) {
 
-                        Destroy(zanki1);
-                        z1IsDestroyed = true;
-                        shot.reset();
-                        count = 1;
+                //ストライクか？
+                if(firstScripts.All(i => i.judge == true)) {
 
-                     } else if(z2IsDestroyed == false) {
+                    Debug.Log("ストライク！！");
 
-                        Destroy(zanki2);
-                        z2IsDestroyed = true;
-                        shot.reset();
-                        count = 1;
+                    for(int j = 0; j < firstPins.Count; j++) {
 
-                    } else if(z3IsDestroyed == false) {
+                        secondPins.Add(firstPins[j]);
+                        Destroy(firstPins[j]);
 
-                        Destroy(zanki3);
-                        z3IsDestroyed = true;                        
-                    
                     }
 
-                    if(z3IsDestroyed) {
 
-                        goText.SetActive(true);
-                        count = 0;
+                    firstPins.Clear();
+                    firstScripts.Clear();
 
-                        if(Input.GetKeyDown("t")) {
+                    pm.generated = false;
+                    th.Reset();
 
-                            SceneManager.LoadScene("title");
+                } else {
+                    
+                    //ピンの状態を確かめるぞ
+                    for(int j = 0; j < firstPins.Count; j++) {
+                        
+                        //ピンはまだ立っているか？
+                        if(!firstScripts[j].judge) {
 
-                        } else if(Input.GetKeyDown("r")) {
+                            //二回目のピンのセット
+                            secondPins.Add(firstPins[j]);
+                            Destroy(firstPins[j]);
+
+                        } else {
                             
-                            Scene loadScene = SceneManager.GetActiveScene();
-                            SceneManager.LoadScene(loadScene.name);
+                            Destroy(firstPins[j]);
 
                         }
-                    
+
+                    }
+                
+
+                    //最後にいろいろリセット
+                    firstPins.Clear();
+                    firstScripts.Clear();
+                    second_throw = true;
+                    pm.generated = false;
+                    th.Reset();
+                    first_throw = false;
+                }
+
+            } 
+
+
+        //２回目の投げか？       
+        } else if(second_throw) {
+                
+            // Debug.Log("ヤーヤーヤー");
+
+
+                //ボールが奥に着いたか？&&すべてのピンが止まったか？
+                if(th.arrived && secondPins.All(i => i.GetComponent<Rigidbody>().IsSleeping())) {
+
+                    //スペアか？
+                    if(secondScripts.All(i => i.judge == true)) {
+                
+                        Debug.Log("スペアや！");
+
+                    } else {
+                
+                    //２回目で倒したピン数える
+
                     }
 
 
+                //また１回目の投げから
+
                 }
 
- 
-                
-                       
-            }
         }
         
     }
