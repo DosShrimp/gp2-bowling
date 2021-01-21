@@ -39,22 +39,25 @@ public class PinManager : MonoBehaviour
         //二回目か？&&生成してないか？
         } else if(m.second_throw && !generated) {
             
-            for(int i = 0; i < secondPins.Count; i++) {
+            if(secondPins != null && secondPins.Count > 0) {
 
-                //二回目の投げのピンたちはCollapseコンポーネントを持っているのか？
-                if(secondPins[i].GetComponent<Collapse>() != null) {
+                for(int i = 0; i < secondPins.Count; i++) {
+
+                    //二回目の投げのピンたちはCollapseコンポーネントを持っているのか？
+                    if(secondPins[i].GetComponent<Collapse>() != null) {
                 
-                    secondPins[i].GetComponent<Collapse>().enabled = true;
+                        secondPins[i].GetComponent<Collapse>().enabled = true;
+                                
+                        secondScripts.Add(secondPins[i].GetComponent<Collapse>());
                 
-                    Instantiate(secondPins[i], secondPins[i].transform.position, Quaternion.identity);
-                
-                    secondScripts.Add(secondPins[i].GetComponent<Collapse>());
-                
+                    }   
+
                 }
+
+                generated = true;
 
             }
 
-            generated = true;
         }
         
     }
