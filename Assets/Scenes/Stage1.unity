@@ -853,6 +853,7 @@ MonoBehaviour:
   secondPins: []
   first_throw: 1
   second_throw: 0
+  collapsed: 0
   sm: {fileID: 321604798}
 --- !u!4 &1362032826
 Transform:

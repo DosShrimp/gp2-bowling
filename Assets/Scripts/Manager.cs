@@ -24,14 +24,12 @@ public class Manager : MonoBehaviour
     public bool second_throw = false;
 
     int[] frameCount = {1, 1}; 
-    int[] finalFrame = {3, 3};
+    int[] finalFrame = {10, 10};
     int[] finalFrame_throwCount = {0, 0};
     bool[] isEnd = {false, false};
 
-    public int[][] score;
-
     //倒れたピンの数
-    int collapsed = 0;
+    public int collapsed = 0;
 
     bool player1Turn = true;
     bool player2turn = false;
@@ -45,10 +43,6 @@ public class Manager : MonoBehaviour
         firstPins = pm.firstPins;
         firstScripts = pm.firstScripts;
         secondScripts = pm.secondScripts;
-
-        score = new int[2][];
-        score[0] = new int[finalFrame[0]];
-        score[1] = new int[finalFrame[1]];
     }
 
     // Update is called once per frame
@@ -58,16 +52,6 @@ public class Manager : MonoBehaviour
         //全員のゲームの終了
         if(isEnd.All(i => i == true)) {
             Debug.Log("ゲーム終了や！！");
-
-            Debug.Log("プレイヤー0のスコア");
-            for(int i = 0; i < score[0].Count(); i++) {
-                Debug.Log(score[0][i]);
-            }
-
-            Debug.Log("プレイヤー1のスコア");
-            for(int i = 0; i < score[1].Count(); i++) {
-                Debug.Log(score[1][i]);
-            }
         
         //プレイヤー1の番か？
         } else if(player1Turn) {
@@ -94,8 +78,6 @@ public class Manager : MonoBehaviour
             //一回目の投げか？   
             if(first_throw) {   
 
-                // Debug.Log("今は１回目の投げや");
-
                 //ボールが奥に着いたか？&&すべてのピンが止まったか？
                 if(th.arrived && firstPins.All(i => i.GetComponent<Rigidbody>().IsSleeping())) {
 
@@ -110,8 +92,6 @@ public class Manager : MonoBehaviour
 
                         }
 
-                        var list = new List<int>(frameCount);
-                        score[turn][list[turn]-1] = 10;
 
                         firstPins.Clear();
                         firstScripts.Clear();
@@ -119,18 +99,23 @@ public class Manager : MonoBehaviour
                         th.Reset();
 
                         if(frameCount[turn] != finalFrame[turn]) {
+                            
+                            //スコアテキストの生成
+                            var list = new List<int>(frameCount);
+                            sm.GenerateText(turn, list[turn]-1, 1, 10);
 
                             //次のフレームへ
                             frameCount[turn] += 1;
-
-                            // var list2 = new List<int>(frameCount);
-                            // sm.GenerateText(player1Turn, list2[turn]-1);
 
                             ChangeTurn(turn);
 
                         //現在のフレームが10フレーム目か？10フレーム目で3回投げたか？
                         } else if(frameCount[turn] == finalFrame[turn]) {
                             
+                            Debug.Log(finalFrame_throwCount[turn]);
+
+                            var list2 = new List<int>(frameCount);
+                            sm.GenerateText(turn, list2[turn]-1, finalFrame_throwCount[turn], 10);
 
                             if(finalFrame_throwCount[turn] >= 2) {
 
@@ -138,9 +123,15 @@ public class Manager : MonoBehaviour
                                 ChangeTurn(turn);
 
                             } else {
-
+                                
                                 finalFrame_throwCount[turn] += 1;
-                            
+
+                                if(finalFrame_throwCount[turn] > 2) {
+
+                                    finalFrame_throwCount[turn] = 2;
+
+                                }
+
                             }
                         
                         }
@@ -167,22 +158,34 @@ public class Manager : MonoBehaviour
 
                         }
 
-
                         //現在のフレームは最終か？
                         if(frameCount[turn] == finalFrame[turn]) {
 
-                            if(finalFrame_throwCount[turn] >= 2) {
-                        
-                                score[turn][frameCount[turn]] = 10 - secondPins.Count();
+                            var list2 = new List<int>(frameCount);
+                            sm.GenerateText(turn, list2[turn]-1, finalFrame_throwCount[turn], 10 - secondPins.Count());
 
+                            if(finalFrame_throwCount[turn] >= 2) {
+                                                    
                                 frameCount[turn] += 1;
                                 ChangeTurn(turn);
 
                             } else {
 
                                 finalFrame_throwCount[turn] += 1;
-                            
+
+                                if(finalFrame_throwCount[turn] > 2) {
+
+                                    finalFrame_throwCount[turn] = 2;
+
+                                }
+
                             }
+
+                        } else {
+                            
+                            //スコアテキストの生成
+                            var list2 = new List<int>(frameCount);
+                            sm.GenerateText(turn, list2[turn]-1, 1, 10 - secondPins.Count());
 
                         }
                     
@@ -202,98 +205,121 @@ public class Manager : MonoBehaviour
             //２回目の投げか？       
             } else if(second_throw) {
                     
-                // Debug.Log("今は２回目の投げや");
+                //ボールが奥に着いたか？&&すべてのピンが止まったか？
+                if(th.arrived && secondPins.All(i => i.GetComponent<Rigidbody>().IsSleeping())) {
 
-                    //ボールが奥に着いたか？&&すべてのピンが止まったか？
-                    if(th.arrived && secondPins.All(i => i.GetComponent<Rigidbody>().IsSleeping())) {
+                    //スペアか？
+                    if(secondScripts.All(i => i.judge == true)) {
+                
+                        Debug.Log("スペアや！");
 
-                        //スペアか？
-                        if(secondScripts.All(i => i.judge == true)) {
-                    
-                            Debug.Log("スペアや！");
+                        for(int j = 0; j < secondPins.Count(); j++) {
 
-
-                            for(int j = 0; j < secondPins.Count(); j++) {
-                                Destroy(secondPins[j]);
-                            }
-
-                            score[turn][frameCount[turn]] = 10;
-
-                            secondPins.Clear();
-                            secondScripts.Clear();
-                            first_throw = true;
-                            pm.generated = false;
-                            th.Reset();
-                            second_throw = false;
+                            Destroy(secondPins[j]);
+                        }
 
 
-                            if(frameCount[turn] != finalFrame[turn]) {
+                        first_throw = true;
+                        pm.generated = false;
+                        th.Reset();
+                        second_throw = false;
+
+                        if(frameCount[turn] != finalFrame[turn]) {
+
+                            //スコアテキストの生成
+                            var list2 = new List<int>(frameCount);
+                            sm.GenerateText(turn, list2[turn]-1, 2, 300);
+
+                            frameCount[turn] += 1;
+                            ChangeTurn(turn);
+
+                        } else if(frameCount[turn] == finalFrame[turn]) {
+
+                            var list2 = new List<int>(frameCount);
+                            sm.GenerateText(turn, list2[turn]-1, finalFrame_throwCount[turn], 300);
+
+                            if(finalFrame_throwCount[turn] >= 2) {
 
                                 frameCount[turn] += 1;
                                 ChangeTurn(turn);
 
-                            } else if(frameCount[turn] == finalFrame[turn]) {
+                            } else {
 
-                                if(finalFrame_throwCount[turn] >= 2) {
-
-                                    frameCount[turn] += 1;
-                                    ChangeTurn(turn);
-
-                                } else {
-
-                                    finalFrame_throwCount[turn] += 2;
-                            
-                                }
-                            
-                            }
-
-                        //スペアじゃないとき
-                        } else {
-                            
-                            for(int j = 0; j < secondPins.Count; j++) {
-
-                                if(secondScripts[j].judge) {
-                                    collapsed += 1;
-                                }
-
-                                Destroy(secondPins[j]);
-                            }
-
-                            score[turn][frameCount[turn]] = collapsed;
-
-                            collapsed = 0;
-                            secondPins.Clear();
-                            secondScripts.Clear();
-                            first_throw = true;
-                            pm.generated = false;
-                            th.Reset();
-                            second_throw = false;
-
-                            if(frameCount[turn] != finalFrame[turn]) {
-
-                                frameCount[turn] += 1;
-
-                            } else if(frameCount[turn] == finalFrame[turn]) {
-                                
                                 finalFrame_throwCount[turn] += 2;
 
-                                if(finalFrame_throwCount[turn] >= 2) {
+                                if(finalFrame_throwCount[turn] > 2) {
 
-                                    frameCount[turn] += 1;
-                                    ChangeTurn(turn);
+                                    finalFrame_throwCount[turn] = 2;
 
-                                } else {
-
-                                    finalFrame_throwCount[turn] += 1;
-                            
                                 }
-                            
+                        
+                            }
+                        
+                        }
+                        
+                        secondPins.Clear();
+                        secondScripts.Clear();
+
+                    //スペアじゃないとき
+                    } else {
+                        
+                        for(int j = 0; j < secondPins.Count; j++) {
+
+                            if(secondScripts[j].judge) {
+                                collapsed += 1;
                             }
 
+                            Destroy(secondPins[j]);
                         }
 
+                        first_throw = true;
+                        pm.generated = false;
+                        th.Reset();
+                        second_throw = false;
+
+                        if(frameCount[turn] != finalFrame[turn]) {
+
+                            //スコアテキストの生成
+                            var list2 = new List<int>(frameCount);
+                            sm.GenerateText(turn, list2[turn]-1, 2, collapsed);
+
+                            frameCount[turn] += 1;
+                            ChangeTurn(turn);
+
+                        } else if(frameCount[turn] == finalFrame[turn]) {
+                                
+                            finalFrame_throwCount[turn] += 2;
+                            
+                            if(finalFrame_throwCount[turn] > 2) {
+
+                                finalFrame_throwCount[turn] = 2;
+
+                            }
+
+                            var list2 = new List<int>(frameCount);
+                            sm.GenerateText(turn, list2[turn]-1, finalFrame_throwCount[turn], collapsed);
+                            
+                            if(finalFrame_throwCount[turn] >= 2) {
+
+                                frameCount[turn] += 1;
+                                ChangeTurn(turn);
+
+                            } else {
+
+                                finalFrame_throwCount[turn] += 1;
+                        
+                            }
+                        
+                        }
+
+                        secondPins.Clear();
+                        secondScripts.Clear();
+                        collapsed = 0;
 
                     }
+
+
+                }
 
             }
             
@@ -322,5 +348,17 @@ public class Manager : MonoBehaviour
             player2turn = true;
                                 
         }
+    }
+
+    public int GetSecondPinsCount() {
+    
+        return secondPins.Count;
+    
+    }
+
+    public int GetCollapsed() {
+
+        return collapsed;
+    
     }
 }
