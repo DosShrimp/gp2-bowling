@@ -24,17 +24,24 @@ public class Collapse : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // if(transform.position.z > z1 || transform.position.z < z2 || transform.position.x > x1 || transform.position.x < x2) {
-        //     Debug.Log("WowWow");
-        //     judge = true;
-        // }
+        if(this.GetComponent<Rigidbody>().IsSleeping()) {
+
+            if(transform.localEulerAngles.x > 30.0f || transform.localEulerAngles.z > 30.0f || transform.localEulerAngles.x < -30.0f || transform.localEulerAngles.z < -30.0f) {
+
+                judge = true;
+
+            }
+        
+        }
 
     }
 
     void OnCollisionEnter(Collision collision) {
-        if(collision.gameObject.tag != "Plane") {
-            judge = true;
-        }
-    }// Start is called before the first frame update
+
+        Debug.Log(collision.relativeVelocity.magnitude);
+        // if(collision.gameObject.tag != "Plane") {
+        //     judge = true;
+        // }
+    }
  
 }

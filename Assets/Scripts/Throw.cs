@@ -117,5 +117,6 @@ public class Throw : MonoBehaviour
         navi.transform.position = new Vector3(0, 0, -28.0f);
         navi.transform.rotation = Quaternion.identity;
 
+        rt.sizeDelta = new Vector2 (120, 10);
     }
 }

@@ -14,6 +14,8 @@ public class SheetManager : MonoBehaviour
     public List<GameObject> texts1 = new List<GameObject>();
     public List<GameObject> texts2 = new List<GameObject>();
 
+    public List<int> finalScores = new List<int>();
+
     List<int> sFrame10Point1 = new List<int>();
     List<int> sFrame10Point2 = new List<int>();
 
@@ -355,13 +357,13 @@ public class SheetManager : MonoBehaviour
                 if(turn == 0) {
 
                     frame10Point1 += 10;
-                    sFrame10Point1.Add(10);
+                    sFrame10Point1.Add(11);
 
                 //プレイヤー2
                 } else {
 
                     frame10Point2 += 10;
-                    sFrame10Point2.Add(10);
+                    sFrame10Point2.Add(11);
 
                 }
 
@@ -395,7 +397,6 @@ public class SheetManager : MonoBehaviour
 
                     } else if(sFrame10Point1.Count == 3) {
 
-                        Debug.Log("auio");
                         x = 340.0f;
 
                     }
@@ -410,7 +411,6 @@ public class SheetManager : MonoBehaviour
 
                     } else if(sFrame10Point2.Count == 3) {
 
-                        Debug.Log("auio");
                         x = 340.0f;
 
                     }
@@ -546,23 +546,19 @@ public class SheetManager : MonoBehaviour
 
                     if(sFrame10Point1.Count > 2) {
 
-                        if(sFrame10Point1[0] == 10 && sFrame10Point1[1] == 10 && sFrame10Point1[2] == 10) {
+                        if(sFrame10Point1[1] == 11) {
 
-                            Debug.Log("hoge"); 
+                            finalScore -= sFrame10Point1[0] - 1;
 
-                        } else if(sFrame10Point1[0] == 10 && sFrame10Point1[2] == 10) {
-                            
-                            finalScore -= sFrame10Point1[1];
+                        } else if(sFrame10Point1[2] == 11) {
 
-                        } else if(sFrame10Point1[1] == 10 && sFrame10Point1[2] == 10) {
-
-                            finalScore -= sFrame10Point1[0];
+                            finalScore -=sFrame10Point1[1] - 1;
 
                         }
                     
                     }
 
-
+                    finalScores.Add(finalScore);
                     tx2.text = finalScore.ToString();
                     tx3.text = finalScore.ToString();
 
@@ -690,23 +686,19 @@ public class SheetManager : MonoBehaviour
 
                     if(sFrame10Point2.Count > 2) {
 
-                        if(sFrame10Point2[0] == 10 && sFrame10Point2[1] == 10 && sFrame10Point2[2] == 10) {
+                        if(sFrame10Point2[1] == 11) {
 
-                            Debug.Log("hoge"); 
+                            finalScore -= sFrame10Point2[0] - 1;
 
-                        } else if(sFrame10Point2[0] == 10 && sFrame10Point2[2] == 10) {
-                            
-                            finalScore -= sFrame10Point2[1];
+                        } else if(sFrame10Point2[2] == 11) {
 
-                        } else if(sFrame10Point2[1] == 10 && sFrame10Point2[2] == 10) {
-
-                            finalScore -= sFrame10Point2[0];
+                            finalScore -= sFrame10Point2[1] - 1;
 
                         }
                     
                     }
 
-
+                    finalScores.Add(finalScore);
                     tx2.text = finalScore.ToString();
                     tx3.text = finalScore.ToString();
                     

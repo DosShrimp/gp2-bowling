@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Manager : MonoBehaviour
 {
     public PinManager pm;
-    public GameObject gcText;
-
     public GameObject player;
     Throw th;
-
-    public GameObject goText;
 
     List<GameObject> firstPins;
     List<Collapse> firstScripts;
@@ -36,6 +33,14 @@ public class Manager : MonoBehaviour
 
     public SheetManager sm;
 
+    public GameObject score;
+    public GameObject player1FinalScore;
+    public GameObject player2FinalScore;
+    public GameObject player1Announcement;
+    public GameObject player2Announcement;
+    
+    public GameObject playerTurntext;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -51,7 +56,51 @@ public class Manager : MonoBehaviour
 
         //全員のゲームの終了
         if(isEnd.All(i => i == true)) {
+            score.SetActive(true);
+            playerTurntext.SetActive(false);
+
+            player1FinalScore.GetComponent<Text>().text = sm.finalScores[0].ToString();
+            player2FinalScore.GetComponent<Text>().text = sm.finalScores[1].ToString();
+
             Debug.Log("ゲーム終了や！！");
+
+            Debug.Log(sm.finalScores[0]);
+            Debug.Log(sm.finalScores[1]);
+
+            if(sm.finalScores[0] > sm.finalScores[1]) {
+
+                player1Announcement.GetComponent<Text>().text = "WIN!!";
+                player2Announcement.GetComponent<Text>().text = "LOSE..";
+                
+                player1Announcement.GetComponent<Text>().color = Color.red;
+                player2Announcement.GetComponent<Text>().color = Color.blue;
+
+            } else if(sm.finalScores[1] > sm.finalScores[0]) {
+
+                player1Announcement.GetComponent<Text>().text = "LOSE..";
+                player2Announcement.GetComponent<Text>().text = "WIN!!";
+
+                player2Announcement.GetComponent<Text>().color = Color.red;
+                player1Announcement.GetComponent<Text>().color = Color.blue;
+
+            } else {
+
+                player1Announcement.GetComponent<Text>().text = "DRAW";
+                player2Announcement.GetComponent<Text>().text = "DRAW";
+
+            }
+
+            if(Input.GetKeyDown("space")) {
+                
+                SceneManager.LoadScene("Title");
+
+            } else if(Input.GetKeyDown("r")) {
+
+                SceneManager.LoadScene("Game");
+
+            }
+
+
         
         //プレイヤー1の番か？
         } else if(player1Turn) {
@@ -71,10 +120,16 @@ public class Manager : MonoBehaviour
         Debug.Log(turn + "の番です");
 
         if(turn == 0) {
+            
+            playerTurntext.GetComponent<Text>().text = "プレイヤー1のターン";
+            playerTurntext.GetComponent<Text>().color = Color.red;
 
             player.GetComponent<Renderer>().material.color = Color.red;
 
         } else {
+
+            playerTurntext.GetComponent<Text>().text = "プレイヤー2のターン";
+            playerTurntext.GetComponent<Text>().color = Color.blue;
 
             player.GetComponent<Renderer>().material.color = Color.blue;
 
@@ -156,7 +211,7 @@ public class Manager : MonoBehaviour
                             if(!firstScripts[j].judge) {
                                 
                                 //二回目のピンのセット
-                                secondPins.Add(Instantiate(firstPins[j], firstPins[j].transform.position, Quaternion.identity));
+                                secondPins.Add(Instantiate(firstPins[j], new Vector3(pm.pinLocations[j , 0], pm.pinLocations[j , 1], pm.pinLocations[j , 2]), Quaternion.identity));
 
                                 Destroy(firstPins[j]);
 
