@@ -64,43 +64,43 @@ public class PinManager : MonoBehaviour
 
     void FirstGenerate() {
         //1ピン目
-        firstPins.Add(Instantiate(pin, new Vector3(0.0f, 3.0f, 40.0f), Quaternion.identity));
+        firstPins.Add(Instantiate(pin, new Vector3(0.0f, 0.0f, 40.0f), Quaternion.identity));
         firstScripts.Add(firstPins[0].GetComponent<Collapse>());
 
         //2ピン目
-        firstPins.Add(Instantiate(pin, new Vector3(-1.0f, 3.0f, 45.0f), Quaternion.identity));
+        firstPins.Add(Instantiate(pin, new Vector3(-1.0f, 0.0f, 45.0f), Quaternion.identity));
         firstScripts.Add(firstPins[1].GetComponent<Collapse>());
 
         //3ピン目
-        firstPins.Add(Instantiate(pin, new Vector3(1.0f, 3.0f, 45.0f), Quaternion.identity));
+        firstPins.Add(Instantiate(pin, new Vector3(1.0f, 0.0f, 45.0f), Quaternion.identity));
         firstScripts.Add(firstPins[2].GetComponent<Collapse>());
 
         //4ピン目
-        firstPins.Add(Instantiate(pin, new Vector3(-2.0f, 3.0f, 50.0f), Quaternion.identity));
+        firstPins.Add(Instantiate(pin, new Vector3(-2.0f, 0.0f, 50.0f), Quaternion.identity));
         firstScripts.Add(firstPins[3].GetComponent<Collapse>());
 
         //5ピン目
-        firstPins.Add(Instantiate(pin, new Vector3(0.0f, 3.0f, 50.0f), Quaternion.identity));
+        firstPins.Add(Instantiate(pin, new Vector3(0.0f, 0.0f, 50.0f), Quaternion.identity));
         firstScripts.Add(firstPins[4].GetComponent<Collapse>());
 
         //6ピン目
-        firstPins.Add(Instantiate(pin, new Vector3(2.0f, 3.0f, 50.0f), Quaternion.identity));
+        firstPins.Add(Instantiate(pin, new Vector3(2.0f, 0.0f, 50.0f), Quaternion.identity));
         firstScripts.Add(firstPins[5].GetComponent<Collapse>());
 
         //7ピン目
-        firstPins.Add(Instantiate(pin, new Vector3(-3.0f, 3.0f, 55.0f), Quaternion.identity));
+        firstPins.Add(Instantiate(pin, new Vector3(-3.0f, 0.0f, 55.0f), Quaternion.identity));
         firstScripts.Add(firstPins[6].GetComponent<Collapse>());
 
         //8ピン目
-        firstPins.Add(Instantiate(pin, new Vector3(-1.0f, 3.0f, 55.0f), Quaternion.identity));
+        firstPins.Add(Instantiate(pin, new Vector3(-1.0f, 0.0f, 55.0f), Quaternion.identity));
         firstScripts.Add(firstPins[7].GetComponent<Collapse>());
 
         //9ピン目
-        firstPins.Add(Instantiate(pin, new Vector3(1.0f, 3.0f, 55.0f), Quaternion.identity));
+        firstPins.Add(Instantiate(pin, new Vector3(1.0f, 0.0f, 55.0f), Quaternion.identity));
         firstScripts.Add(firstPins[8].GetComponent<Collapse>());
 
         //9ピン目
-        firstPins.Add(Instantiate(pin, new Vector3(3.0f, 3.0f, 55.0f), Quaternion.identity));
+        firstPins.Add(Instantiate(pin, new Vector3(3.0f, 0.0f, 55.0f), Quaternion.identity));
         firstScripts.Add(firstPins[9].GetComponent<Collapse>());
     }
     

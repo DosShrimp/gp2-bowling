@@ -70,7 +70,17 @@ public class Manager : MonoBehaviour
 
         Debug.Log(turn + "の番です");
 
-        // Debug.Log(frameCount + "フレーム目やで");
+        if(turn == 0) {
+
+            player.GetComponent<Renderer>().material.color = Color.red;
+
+        } else {
+
+            player.GetComponent<Renderer>().material.color = Color.blue;
+
+        }
+
+
 
         //10フレームになるまで投げ続ける
         if(frameCount[turn] <= finalFrame[turn]) {

@@ -549,7 +549,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u7403\u98DB\u3070\u3057\nPress any key"
+  m_Text: "\u30DC\u30A6\u30EA\u30F3\u30B0\nPress any key"
 --- !u!222 &1055540325
 CanvasRenderer:
   m_ObjectHideFlags: 0

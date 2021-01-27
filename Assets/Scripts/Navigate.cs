@@ -5,8 +5,10 @@ using UnityEngine;
 public class Navigate : MonoBehaviour
 {
     public float speed = 0.5f;
-    bool isClicked1 = false;
-    bool isClicked2 = false;
+    float count = 0.0f;
+    public bool isClicked1 = false;
+    public bool isClicked2 = false;
+    public GameObject yajirusi;
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +20,7 @@ public class Navigate : MonoBehaviour
     void Update()
     {
         float moveAccount = speed * Time.deltaTime;
+        count += 0.01f;
         
         if(!isClicked1) {
 
@@ -26,20 +29,20 @@ public class Navigate : MonoBehaviour
             }
 
             if(Input.GetKey(KeyCode.RightArrow) && transform.position.x < 10.0f) {
-                transform.position += new Vector3(moveAccount, 0, 0);
+                transform.position += new Vector3(moveAccount/2, 0, 0);
             } 
 
             if(Input.GetKey(KeyCode.LeftArrow) && transform.position.x > -10.0f) {
-                transform.position += new Vector3(-moveAccount, 0, 0);
+                transform.position += new Vector3(-moveAccount/2, 0, 0);
             }
 
         } else if(!isClicked2) {
 
-            if(Input.GetKey(KeyCode.RightArrow) && transform.localEulerAngles.y < 30.0f) {
+            if(Input.GetKey(KeyCode.RightArrow) && (transform.localEulerAngles.y < 30.0f || transform.localEulerAngles.y > 325.0f)) {
                 transform.Rotate(0, moveAccount, 0);
             } 
 
-            if(Input.GetKey(KeyCode.LeftArrow) && transform.localEulerAngles.y > -30.0f) {
+            if(Input.GetKey(KeyCode.LeftArrow) && (transform.localEulerAngles.y > 330.0f || transform.localEulerAngles.y < 35.0f)) {
                 transform.Rotate(0, -moveAccount, 0);
             }
             

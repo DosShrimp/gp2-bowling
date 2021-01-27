@@ -6,6 +6,7 @@ public class Throw : MonoBehaviour
 {
 
     public GameObject meter;
+    public GameObject navi;
     public RectTransform rt;
 
     public float speed = 0.5f;
@@ -17,11 +18,14 @@ public class Throw : MonoBehaviour
     public bool throwed = false;
     public bool arrived = false;
 
+    Rigidbody rb;
+
 
     // Start is called before the first frame update
     void Start()
     {
         rt = meter.GetComponent(typeof (RectTransform)) as RectTransform;
+        rb = GetComponent<Rigidbody>();
 
     }
 
@@ -39,22 +43,22 @@ public class Throw : MonoBehaviour
             }
 
             if(Input.GetKey(KeyCode.RightArrow) && transform.position.x < 10.0f) {
-                transform.position += new Vector3(moveAccount, 0, 0);
+                transform.position += new Vector3(moveAccount/2, 0, 0);
             } 
 
             if(Input.GetKey(KeyCode.LeftArrow) && transform.position.x > -10.0f) {
-                transform.position += new Vector3(-moveAccount, 0, 0);
+                transform.position += new Vector3(-moveAccount/2, 0, 0);
             }
 
         } else if(!isClicked2) {
 
-            if(Input.GetKey(KeyCode.RightArrow) && transform.localEulerAngles.y < 30.0f) {
+            if(Input.GetKey(KeyCode.RightArrow) && (transform.localEulerAngles.y < 30.0f || transform.localEulerAngles.y > 325.0f)) {
 
                 transform.Rotate(0, moveAccount, 0);
 
             } 
 
-            if(Input.GetKey(KeyCode.LeftArrow) && transform.localEulerAngles.y > -30.0f) {
+            if(Input.GetKey(KeyCode.LeftArrow) && (transform.localEulerAngles.y > 330.0f || transform.localEulerAngles.y < 35.0f)) {
                 transform.Rotate(0, -moveAccount, 0);
             }
             
@@ -91,6 +95,8 @@ public class Throw : MonoBehaviour
     }
 
     public void Reset() {
+
+        rb.velocity = Vector3.zero;
         
         count = 0.0f;
 
@@ -99,8 +105,17 @@ public class Throw : MonoBehaviour
         isClicked3 = false;
 
         throwed = false; 
-        arrived = false;
+        arrived = false;        
 
-        transform.position = new Vector3(0, 1, -5);
+        transform.position = new Vector3(0, 1, -28);
+        transform.rotation = Quaternion.identity;
+
+
+        navi.GetComponent<Navigate>().isClicked1 = false;
+        navi.GetComponent<Navigate>().isClicked2 = false;
+
+        navi.transform.position = new Vector3(0, 0, -28.0f);
+        navi.transform.rotation = Quaternion.identity;
+
     }
 }
