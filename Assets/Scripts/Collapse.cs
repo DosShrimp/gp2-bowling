@@ -25,8 +25,9 @@ public class Collapse : MonoBehaviour
     void Update()
     {
         if(this.GetComponent<Rigidbody>().IsSleeping()) {
-
-            if(transform.localEulerAngles.x > 30.0f || transform.localEulerAngles.z > 30.0f || transform.localEulerAngles.x < -30.0f || transform.localEulerAngles.z < -30.0f) {
+            
+        //     // if(transform.localEulerAngles.x > 30.0f || transform.localEulerAngles.z > 30.0f || transform.localEulerAngles.x < -30.0f || transform.localEulerAngles.z < -30.0f) {
+            if(Mathf.Abs(transform.eulerAngles.x) > 30.0f || Mathf.Abs(transform.eulerAngles.z) > 30.0f) {
 
                 judge = true;
 
@@ -39,9 +40,12 @@ public class Collapse : MonoBehaviour
     void OnCollisionEnter(Collision collision) {
 
         Debug.Log(collision.relativeVelocity.magnitude);
-        // if(collision.gameObject.tag != "Plane") {
-        //     judge = true;
-        // }
+
+        if(collision.relativeVelocity.magnitude > 6.5f) {
+
+            judge = true;
+
+        }
     }
  
 }

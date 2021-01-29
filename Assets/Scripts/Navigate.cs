@@ -20,8 +20,7 @@ public class Navigate : MonoBehaviour
     void Update()
     {
         float moveAccount = speed * Time.deltaTime;
-        count += 0.01f;
-        
+                
         if(!isClicked1) {
 
             if(Input.GetKeyDown("space")) {
@@ -52,5 +51,6 @@ public class Navigate : MonoBehaviour
             }
 
         }
+
     }
 }

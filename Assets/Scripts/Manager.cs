@@ -41,6 +41,8 @@ public class Manager : MonoBehaviour
     
     public GameObject playerTurntext;
 
+    public SEManager sem;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -56,6 +58,9 @@ public class Manager : MonoBehaviour
 
         //全員のゲームの終了
         if(isEnd.All(i => i == true)) {
+
+            sem.PlayResultSound();
+
             score.SetActive(true);
             playerTurntext.SetActive(false);
 
@@ -177,7 +182,7 @@ public class Manager : MonoBehaviour
                         //現在のフレームが10フレーム目か？10フレーム目で3回投げたか？
                         } else if(frameCount[turn] == finalFrame[turn]) {
                             
-                            Debug.Log(finalFrame_throwCount[turn]);
+                            // Debug.Log(finalFrame_throwCount[turn]);
 
                             var list2 = new List<int>(frameCount);
                             sm.GenerateText(turn, list2[turn]-1, finalFrame_throwCount[turn], 10);

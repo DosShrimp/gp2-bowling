@@ -20,6 +20,9 @@ public class Throw : MonoBehaviour
 
     Rigidbody rb;
 
+    public SEManager sem;
+
+    bool added = false;
 
     // Start is called before the first frame update
     void Start()
@@ -75,20 +78,28 @@ public class Throw : MonoBehaviour
             if(Input.GetKeyDown("space")) {
 
                 isClicked3 = true;
+                sem.PlayThrowSound();
             }   
 
         } else {
 
             throwed = true;
 
-            if(transform.position.z < 90.0f) {
+            if(transform.position.z > 75.0f) {
                 
-                transform.position += transform.forward * (moveAccount + rt.sizeDelta.y/1000);
-            
+                // transform.position += transform.forward * (moveAccount + rt.sizeDelta.y/1000);
+                arrived = true;
+        
             } else {
 
-                arrived = true;
-            
+                if(added == false) {
+
+                    rb.AddForce(transform.forward * (moveAccount + rt.sizeDelta.y * 5) * 5);
+                    rb.mass = 0.5f + rt.sizeDelta.y / 100;
+                    added = true;
+
+                }
+
             } 
 
         }
@@ -97,7 +108,10 @@ public class Throw : MonoBehaviour
     public void Reset() {
 
         rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
         
+        added = false;
+
         count = 0.0f;
 
         isClicked1 = false;
