@@ -6,46 +6,42 @@ public class Collapse : MonoBehaviour
 {
     public bool judge = false;
 
-    float z1;
-    float z2;
-    float x1;
-    float x2;
+    public float rotX;
+    public float rotY;
+    public float rotZ;
 
     // Start is called before the first frame update
     void Start()
     {
-        z1 = transform.position.z + 5.0f;
-        z2 = transform.position.z - 5.0f;
-        x1 = transform.position.x + 5.0f;
-        x2 = transform.position.x - 5.0f;
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(this.GetComponent<Rigidbody>().IsSleeping()) {
-            
-        //     // if(transform.localEulerAngles.x > 30.0f || transform.localEulerAngles.z > 30.0f || transform.localEulerAngles.x < -30.0f || transform.localEulerAngles.z < -30.0f) {
-            if(Mathf.Abs(transform.eulerAngles.x) > 30.0f || Mathf.Abs(transform.eulerAngles.z) > 30.0f) {
+        rotX = transform.localEulerAngles.x;
+        rotY = transform.localEulerAngles.y;
+        rotZ = transform.localEulerAngles.z;
 
-                judge = true;
+        if(this.GetComponent<Rigidbody>().velocity == Vector3.zero) {
+
+            if(this.GetComponent<Rigidbody>().angularVelocity == Vector3.zero) {
+
+                Debug.Log("aaaa");
+
+                if((rotX > 20.0f && rotX < 340.0f) || (rotZ > 20.0f && rotZ < 340.0f)) {
+                    
+                    Judge();
+
+                }
 
             }
-        
         }
 
     }
 
-    void OnCollisionEnter(Collision collision) {
-
-        Debug.Log(collision.relativeVelocity.magnitude);
-
-        if(collision.relativeVelocity.magnitude > 6.5f) {
-
-            judge = true;
-
-        }
+    public void Judge() {
+        judge = true;
     }
  
 }
