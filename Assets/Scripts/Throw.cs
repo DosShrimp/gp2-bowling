@@ -93,7 +93,7 @@ public class Throw : MonoBehaviour
 
                 if(added == false) {
 
-                    rb.AddForce(transform.forward * (moveAccount + rt.sizeDelta.y/5) * 100);
+                    rb.AddForce(transform.forward * (moveAccount + rt.sizeDelta.y/5) * 120);
                     rb.mass = 0.5f + rt.sizeDelta.y / 100;
                     added = true;
 

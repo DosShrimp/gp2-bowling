@@ -29,7 +29,7 @@ public class Collapse : MonoBehaviour
 
                 Debug.Log("aaaa");
 
-                if((rotX > 20.0f && rotX < 340.0f) || (rotZ > 20.0f && rotZ < 340.0f)) {
+                if((rotX > 10.0f && rotX < 350.0f) || (rotZ > 10.0f && rotZ < 350.0f)) {
                     
                     Judge();
 

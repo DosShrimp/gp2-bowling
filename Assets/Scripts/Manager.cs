@@ -42,6 +42,7 @@ public class Manager : MonoBehaviour
     public GameObject playerTurntext;
 
     public SEManager sem;
+    bool isSounded = false;
 
     // Start is called before the first frame update
     void Start()
@@ -59,7 +60,12 @@ public class Manager : MonoBehaviour
         //全員のゲームの終了
         if(isEnd.All(i => i == true)) {
 
-            sem.PlayResultSound();
+            if(isSounded == false) {
+                
+                sem.PlayResultSound();
+                isSounded = true;
+
+            }
 
             score.SetActive(true);
             playerTurntext.SetActive(false);
@@ -239,6 +245,13 @@ public class Manager : MonoBehaviour
                                 frameCount[turn] += 1;
                                 ChangeTurn(turn);
 
+                                secondPins.Clear();
+                                secondScripts.Clear();
+                                first_throw = true;
+                                pm.generated = false;
+                                th.Reset();
+                                second_throw = false;
+
                             } else {
 
                                 finalFrame_throwCount[turn] += 1;
@@ -249,6 +262,14 @@ public class Manager : MonoBehaviour
 
                                 }
 
+                                //最後にいろいろリセット
+                                firstPins.Clear();
+                                firstScripts.Clear();
+                                second_throw = true;
+                                pm.generated = false;
+                                th.Reset();
+                                first_throw = false;
+
                             }
 
                         } else {
@@ -257,15 +278,14 @@ public class Manager : MonoBehaviour
                             var list2 = new List<int>(frameCount);
                             sm.GenerateText(turn, list2[turn]-1, 1, 10 - secondPins.Count());
 
+                            //最後にいろいろリセット
+                            firstPins.Clear();
+                            firstScripts.Clear();
+                            second_throw = true;
+                            pm.generated = false;
+                            th.Reset();
+                            first_throw = false;
                         }
-                    
-                        //最後にいろいろリセット
-                        firstPins.Clear();
-                        firstScripts.Clear();
-                        second_throw = true;
-                        pm.generated = false;
-                        th.Reset();
-                        first_throw = false;
 
                     }
 
